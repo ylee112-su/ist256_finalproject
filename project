@@ -1,0 +1,35 @@
+import requests
+
+def get_temperature(user_location):
+    url = 'https://api.openweathermap.org/data/2.5/weather?q={}&appid=427ea6d16b17895f3732e3ebd2a2a364&units=metric'.format(user_location)
+    response = requests.get(url)
+    data = response.json()
+    temp_in_c = data['main']['temp']
+    temp = (9/5) * temp_in_c + 32
+    return temp
+
+user_location  = input("Input your current location (e.g Syracuse): ")
+
+hot_clothes = ['Short-sleeve', 'Shorts']
+warm_clothes = ['Short-sleeve', 'Shorts','Light-weight Sweatshirt (optional)']
+moderate_clothes = ['Short-sleeve', 'Shorts','Light-weight Sweatshirt','Light golves','Ear warmers']
+cool_clothes = ['Short-sleeve', 'Shorts','Light-weight Sweatshirt','Light weight jacket','Light golves','Ear warmers']
+cold_clothes = ['Short-sleeve', 'Shorts','Light-weight Sweatshirt','Light weight jacket','Light golves','Ear warmers','Neck halter']
+
+current_temp = get_temperature(user_location)
+print(current_temp)
+
+try:
+    if current_temp >= 51:
+        print("We recommend %s" % (hot_clothes))
+    elif 41 < current_temp <= 50:
+        print("We recommend %s" % (warm_clothes))
+    elif 31 < current_temp <= 40:
+        print("We recommend %s" % (moderate_clothes))
+    elif 21 < current_temp <= 30:
+        print("We recommend %s" % (cool_clothes))
+    elif 20 <= current_temp:
+        print("We recommend %s" % (cold_clothes))
+except ValueError:
+    print("That is not a valid location.")
+
