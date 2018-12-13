@@ -1,4 +1,5 @@
 import requests
+import datetime
 
 def get_temperature(user_location):
     url = 'https://api.openweathermap.org/data/2.5/weather?q={}&appid=427ea6d16b17895f3732e3ebd2a2a364&units=metric'.format(user_location)
@@ -8,28 +9,83 @@ def get_temperature(user_location):
     temp = (9/5) * temp_in_c + 32
     return temp
 
-user_location  = input("Input your current location (e.g Syracuse): ")
+def get_weather(user_location):
+    url = 'https://api.openweathermap.org/data/2.5/weather?q={}&appid=427ea6d16b17895f3732e3ebd2a2a364&units=metric'.format(user_location)
+    response = requests.get(url)
+    data = response.json()
+    weather_condition = data['weather'][0]['main']
+    return weather_condition
 
+def hasNumbers(inputString):
+    return any(char.isdigit() for char in inputString)
+
+#Greeting statement
+currentTime = datetime.datetime.now()
+currentTime.hour
+0
+if currentTime.hour < 12:
+    print('Good morning.')
+elif 12 <= currentTime.hour < 18:
+    print('Good afternoon.')
+else:
+    print('Good evening.')
+
+#main
+user_name = input("What is your name? ")
+user_location  = input("Hi %s, can you tell me your current location?(e.g. Syracuse or New York) " % (user_name))
+
+    
 hot_clothes = ['Short-sleeve', 'Shorts']
 warm_clothes = ['Short-sleeve', 'Shorts','Light-weight Sweatshirt (optional)']
-moderate_clothes = ['Short-sleeve', 'Shorts','Light-weight Sweatshirt','Light golves','Ear warmers']
-cool_clothes = ['Short-sleeve', 'Shorts','Light-weight Sweatshirt','Light weight jacket','Light golves','Ear warmers']
-cold_clothes = ['Short-sleeve', 'Shorts','Light-weight Sweatshirt','Light weight jacket','Light golves','Ear warmers','Neck halter']
+moderate_clothes = ['Long-sleeve', 'Pants','Light-weight Sweatshirt','Light golves','Ear warmers']
+cool_clothes = ['Long-sleeve', 'Pants','Light-weight Sweatshirt','Light weight jacket','Light golves','Ear warmers']
+cold_clothes = ['Long-sleeve', 'Pants','Light-weight Sweatshirt','Light weight jacket','Light golves','Ear warmers','Neck halter']
 
-current_temp = get_temperature(user_location)
-print(current_temp)
+while hasNumbers(user_location):
+    print("\nSorry. I cannot understand what you are saying. Can you enter a valid location?")
+    user_location  = input("Hi %s, can you tell me your current location?(e.g. Syracuse) " % (user_name))
+    if not hasNumbers(user_location):
+        break
+while True:
+    try:
+        current_temp = get_temperature(user_location)
+        print('\nThe current temperature at your location is %.2f°F \n' % (current_temp))
+        print('Because it is %.2f°F, for clothings, we recommend:' % (current_temp))
+        if current_temp >= 51:
+            print(', '.join(hot_clothes))
+        elif 41 < current_temp <= 50:
+            print(', '.join(warm_clothes))
+        elif 31 < current_temp <= 40:
+            print(', '.join(moderate_clothes))
+        elif 21 < current_temp <= 30:
+            print(', '.join(cool_clothes))
+        elif 20 <= current_temp:
+            print(', '.join(cold_clothes))
+    except KeyError:
+        print("\nSorry. I cannot understand what you are saying. Can you enter a valid location?")
+        user_location  = input("Hi %s, can you tell me your current location?(e.g. Syracuse) " % (user_name))
+        continue
+    break
 
-try:
-    if current_temp >= 51:
-        print("We recommend %s" % (hot_clothes))
-    elif 41 < current_temp <= 50:
-        print("We recommend %s" % (warm_clothes))
-    elif 31 < current_temp <= 40:
-        print("We recommend %s" % (moderate_clothes))
-    elif 21 < current_temp <= 30:
-        print("We recommend %s" % (cool_clothes))
-    elif 20 <= current_temp:
-        print("We recommend %s" % (cold_clothes))
-except ValueError:
-    print("That is not a valid location.")
 
+snowy_weather = ['Snow-Boots', 'Water-Proof-Socks', 'Umbrella(helps)']
+rainy_weather = ['Umbrella', 'Rain-boots']
+sunny_weather = ['Sunglasses']
+cloudy_weather = ['Happy pill to make your day sunny :)']
+
+current_weather = get_weather(user_location)
+
+accessories_recom = input('\nWould you also like some accessories recommendations? (Yes/No) ')
+if accessories_recom == 'No':
+    print("\nGoodbye! See you soon :)")
+else:
+    print('\nThe current weather at your location is %s.' % (current_weather))
+    print('\nBecause it is %s, for accessories, we recommend:' % (current_weather))
+    if current_weather == 'Clear':
+        print(', '.join(sunny_weather))
+    elif current_weather == 'Rain':
+        print(', '.join(rainy_weather))
+    elif current_weather == 'Snow':
+        print(', '.join(snowy_weather))
+    elif current_weather == 'Clouds':
+        print(', '.join(cloudy_weather))
