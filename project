@@ -43,7 +43,7 @@ cold_clothes = ['Long-sleeve', 'Pants','Light-weight Sweatshirt','Light weight j
 
 while hasNumbers(user_location):
     print("\nSorry. I cannot understand what you are saying. Can you enter a valid location?")
-    user_location  = input("Hi %s, can you tell me your current location?(e.g. Syracuse) " % (user_name))
+    user_location  = input("\nHi %s, can you tell me your current location?(e.g. Syracuse) " % (user_name))
     if not hasNumbers(user_location):
         break
 while True:
@@ -63,7 +63,7 @@ while True:
             print(', '.join(cold_clothes))
     except KeyError:
         print("\nSorry. I cannot understand what you are saying. Can you enter a valid location?")
-        user_location  = input("Hi %s, can you tell me your current location?(e.g. Syracuse) " % (user_name))
+        user_location  = input("\nHi %s, can you tell me your current location?(e.g. Syracuse) " % (user_name))
         continue
     break
 
